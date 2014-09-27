@@ -27,12 +27,13 @@ function Entity:remove(...)
 end
 
 function Entity:get(name)
+	local gotten = {}
 	for i, v in ipairs(self.controllers) do
-		if v.name == name then 
-			return v 
+		if v.name == name then
+			table.insert(gotten, v)
 		end
 	end
-	return nil
+	return unpack(gotten)
 end
 
 function Entity:getAll()

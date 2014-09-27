@@ -1,8 +1,9 @@
 local Person = Class{
 	__includes = Entity,
-	init = function(self, x, y)
+	init = function(self, x, y, type)
 		Entity.init(self, "person", x, y)
-		self:add(Sprite("assets/img/human.png"))
+		local thetype = type or ""
+		self:add(Sprite("assets/img/human"..thetype..".png"))
 		self:add(Collide())
 		self:add(Sex("host"))
 	end

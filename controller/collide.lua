@@ -24,7 +24,6 @@ end
 
 function Collide:autoInit()
 	local sprite = self.parent:get("sprite")
-	print(sprite.image:type())
 	if sprite then
 		self.width, self.height = sprite.image:getWidth(), sprite.image:getHeight()
 	else

@@ -8,6 +8,7 @@ local Sex = Class{
 
 function Sex:added(to)
 	local collide = self.parent:get("collide")
+	
 	if not collide then
 		print("parent entity needs to have collide. Failing.")
 		self.parent.remove(self.name);
@@ -23,11 +24,14 @@ function Sex:added(to)
 end
 
 function Sex:enter(target)
+	print("entering house")
 	table.insert(target.occupants, self.parent)
 	self.staying = target
 
 	target.signals:register("filled", function(e)	
+		print("house filled")
 		Timer.add(3, function()
+			print("leaving house")
 			self:leave()
 		end)
 	end)

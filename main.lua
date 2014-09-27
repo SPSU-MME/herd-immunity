@@ -19,9 +19,6 @@ Collide = require("controller.collide")
 Sprite = require("controller.sprite")
 Person = require("entity.person")
 
---worldState = game.util.state:new()
---game.util.stateManager:construct(game.globalEvents, worldState)
-
 worldState = require("state.worldstate")
 
 function love.load()

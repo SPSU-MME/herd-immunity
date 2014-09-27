@@ -1,11 +1,14 @@
 local worldState = State()
 
 function worldState:enter()
-	print("entered")
 	local rand = love.math.newRandomGenerator()
 	for i=1,2 do
 		self:addEntity(Person(4*i, 4*i))
 	end
+
+	debugHuman = Person(500, 500, 2)
+	self:addEntity(debugHuman)
+
 end
 
 function worldState:stateDraw()
