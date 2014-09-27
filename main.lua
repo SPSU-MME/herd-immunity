@@ -1,10 +1,10 @@
-require("lib.cupid")
+--require("lib.cupid")
 _ = require("lib.Moses.moses")
 _f = require("lib.Frob.frob")
 
 Gamestate = require("lib.hump.gamestate")
 Class = require("lib.hump.class")
-Signal = require("lib.hump.signal")
+Signals = require("lib.hump.signal")
 Timer = require("lib.hump.timer")
 Vector = require("lib.hump.vector")
 Camera = require("lib.hump.camera")
@@ -12,27 +12,34 @@ Camera = require("lib.hump.camera")
 State = require("state.state")
 Entity = require("entity.entity")
 Controller = require("controller.controller")
+Sex = require("controller.sex")
+Host = require("controller.host")
 
+Collide = require("controller.collide")
 Sprite = require("controller.sprite")
+Person = require("entity.person")
 
 --worldState = game.util.state:new()
 --game.util.stateManager:construct(game.globalEvents, worldState)
 
-function worldState:start()
-	print("started")
-end
+worldState = require("state.worldstate")
 
 function love.load()
-	game.globalEvents:fire("start")
-	for k, v in pairs(person0) do
-		print(k, v)
-	end
+	Gamestate.switch(worldState)
 end
 
 function love.update(dt)
-	game.globalEvents:fire("update", dt)
+	Gamestate.update(dt)
 end
 
 function love.draw()
-	worldState:fire("draw")
+	Gamestate.draw()
+end
+
+function love.keypressed(key, code)
+	Gamestate.keypressed(key, code)
+end
+
+function love.mousepressed(x, y, button)
+	Gamestate.mousepressed(x, y, button)
 end
