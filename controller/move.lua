@@ -20,8 +20,6 @@ end
 
 function Move:autoMove(dt, speed)
 
-	--self.parent.x, self.parent.y = self:moveFunction(self, self.parent.x, self.parent.y, 5, dt)
-
 	if Random:random(0, 6) == 5 then
 		self.angle = Random:random()*(2*PI)
 	end
@@ -50,16 +48,13 @@ end
 function Move:smoothMove(dx, dy, time, type)
 	self.moving = true
 	local collide = self.parent:get("collide")
-	if self.parent.x + dx > 0 and self.parent.x + (collide.width or 0) + dx < love.graphics.getWidth() and self.parent.y + dy > 0 and self.parent.y + (collide.height or 0) + dy < love.graphics.getHeight() then
-		Timer.tween(1, self.parent, {x = self.parent.x+dx, y = self.parent.y+dy}, type, function () self.moving = false end)
+	if self.parent.x + dx > 0 and self.parent.x + (collide.width or 0) + dx < love.graphics.getWidth() then
+		if self.parent.y + dy > 0 and self.parent.y + (collide.height or 0) + dy < love.graphics.getHeight() then
+			Timer.tween(1, self.parent, {x = self.parent.x+dx, y = self.parent.y+dy}, type, function () self.moving = false end)
+		end
 	else
-		self.moving = false
+		self.moving = false -- AND THEN, YA GET OUTTA THERE
 	end
-
-	--[[
-	if self.parent.y + dy > 0 and self.parent.y + (collide.height or 0) + dy < love.graphics.getHeight() then
-		Timer.tween(1, self.parent, {}, "linear", function () self.moving = false end)
-	end  ]]
 end
 
 
