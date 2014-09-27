@@ -3,11 +3,9 @@ local stateManager = _f.object(_f.class, _f.evt)
 function stateManager:construct(observing, startState)
 
 	self.observing = observing
-	
+	self.state = {} 
 	if startState then 
-		self.state = startState 
-	else 
-		self.state = {} 
+		self:setState(startState, false)
 	end
 
 	self:registerEvents()
@@ -39,18 +37,20 @@ function stateManager:setState(state, keep)
 	if self.state and self.state.started then 
 		self.state:stop()
 		self.state:fire("stop")
-		if  not keep then 
+	
+		if not keep then
+			self.state:fire("destroy")
 			self.state:destroy() 
 			self.state = nil
 		end
-
-		self.state = state
-		self.state:init()
 	end
+	self.state = state
+	self.state.preInit()
+	self.state:fire("init")
+	self.state:init()
 end
 
 function stateManager:start()
-	self.state:preStart()
 	self.state:fire("start")
 	self.state:start()
 	self.state.started = false
@@ -63,7 +63,10 @@ function stateManager:stop()
 end
 
 function stateManager:update(dt)
-	if (self.state.started) then self.state:update(dt) end
+	if (self.state.started) then 
+		self.state:update(dt)
+		self.state:fire("update", dt)
+	end
 end
 
 function stateManager:draw()

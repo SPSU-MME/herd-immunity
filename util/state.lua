@@ -10,10 +10,11 @@ end
 ---------------------------------------
 ---CALLBACKS---
 --------------------
+function state:preInit() end -- runs right before firing the init event (like before entities run their own initializations)
 
-function state:init() end -- runs as soon as the state is set
+function state:initState() end -- runs as soon as the state is set
 
-function state:preStart() end -- runs right before firing the start event (like before entities run their own starts)
+function state:init() end --runs idk
 
 function state:start() end -- right after firing the start event
 
@@ -24,3 +25,5 @@ function state:update(dt) end -- do every
 function state:destroy() end -- clean up everything
 
 return state
+
+--events: init, start, stop, update draw. Have entities hook these.
