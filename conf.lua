@@ -13,7 +13,7 @@ function love.conf(t)
     t.window.minheight = 1             -- Minimum window height if the window is resizable (number)
     t.window.fullscreen = false        -- Enable fullscreen (boolean)
     t.window.fullscreentype = "normal" -- Standard fullscreen or desktop fullscreen mode (string)
-    t.window.vsync = true              -- Enable vertical sync (boolean)
+    t.window.vsync = false              -- Enable vertical sync (boolean)
     t.window.fsaa = 0                  -- The number of samples to use with multi-sampled antialiasing (number)
     t.window.display = 1               -- Index of the monitor to show the window in (number)
     t.window.highdpi = false           -- Enable high-dpi mode for the window on a Retina display (boolean). Added in 0.9.1
@@ -34,4 +34,4 @@ function love.conf(t)
     t.modules.window = true            -- Enable the window module (boolean)
     t.modules.thread = true            -- Enable the thread module (boolean)
 end
-require "lib.cupid"
+--require "lib.cupid"

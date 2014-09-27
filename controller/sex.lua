@@ -8,7 +8,7 @@ local Sex = Class{
 
 function Sex:added(to)
 	local collide = self.parent:get("collide")
-	
+
 	if not collide then
 		print("parent entity needs to have collide. Failing.")
 		self.parent.remove(self.name);

@@ -6,6 +6,7 @@ local Person = Class{
 		self:add(Sprite("assets/img/human"..thetype..".png"))
 		self:add(Collide())
 		self:add(Sex("host"))
+		self:add(Move("brownian"))
 	end
 }
 

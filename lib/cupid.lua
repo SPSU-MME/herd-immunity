@@ -29,7 +29,6 @@ local config = {
 	enable_physics = false,
 	physics_show = false,
 	enable_temporal = true,
-
 }
 
 -----------------------------------------------------
