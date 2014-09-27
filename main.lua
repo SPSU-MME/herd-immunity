@@ -20,11 +20,6 @@ function mainState:update()
 	game.globalEvents.fire("start")
 end
 
-mainState:on("draw", function() -- states really shouldn't need to draw things.
-	love.graphics.circle("fill", 5, 5, 200, 60)
-end)
-
-
 function love.load()
 	game.globalEvents:fire("start")
 end

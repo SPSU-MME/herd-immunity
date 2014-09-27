@@ -20,7 +20,7 @@ function state:registerEvents()
 	self.observing:on("stop", function()
 		self:fire("stop")
 		self:stop()
-		self.stopped = true
+		self.started = false
 	end)
 
 
