@@ -2,26 +2,21 @@ require("lib.cupid")
 _ = require("lib.Moses.moses")
 _f = require("lib.Frob.frob")
 
-game = {util = {}, controller = {}, entity = {}}
+Gamestate = require("lib.hump.gamestate")
+Class = require("lib.hump.class")
+Signal = require("lib.hump.signal")
+Timer = require("lib.hump.timer")
+Vector = require("lib.hump.vector")
+Camera = require("lib.hump.camera")
 
-game.globalEvents = _f.object(_f.evt)
-game.util.stateManager = require("util.stateManager")
-game.util.state = require("util.state")
-game.util.entity = require("util.entity")
-game.util.controller = require("util.controller")
+State = require("state.state")
+Entity = require("entity.entity")
+Controller = require("controller.controller")
 
-game.controller.sprite = require("sprite")
-game.entity.person = require("person")
+Sprite = require("controller.sprite")
 
-
-worldState = game.util.state:new()
-game.util.stateManager:construct(game.globalEvents, worldState)
-
-worldState:on("draw", function()
-	love.graphics.setBackgroundColor(50, 170, 50)
-end)
-
-person0 = game.entity.person:new(worldState, 100, 100).observing
+--worldState = game.util.state:new()
+--game.util.stateManager:construct(game.globalEvents, worldState)
 
 function worldState:start()
 	print("started")
