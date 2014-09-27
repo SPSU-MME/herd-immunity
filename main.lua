@@ -8,16 +8,13 @@ game.globalEvents = _f.object(_f.evt)
 
 game.state = require("state")
 game.entity = require("entity")
+game.stateManager = require("stateManager")
 
-mainState = game.state:new(game.globalEvents)
+worldState = game.state:new()
+game.stateManager:construct(game.globalEvents, worldState)
 
-
-function mainState:start()
+function worldState:start()
 	print("started")
-end
-
-function mainState:update()
-	game.globalEvents.fire("start")
 end
 
 function love.load()
@@ -30,8 +27,4 @@ end
 
 function love.draw()
 	game.globalEvents:fire("draw")
-end
-
-function love.keypressed(k)
-	
 end

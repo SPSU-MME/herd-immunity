@@ -1,61 +1,26 @@
 local state = _f.object(_f.class, _f.evt)
 
-function state:construct(observing)
+function state:construct()
 	self.entities = {}
 	self.started = false
 	self.visible = true
-
-	self.observing = observing
-	self:registerEvents()
 end
 
-function state:registerEvents()
-	self.observing:on("start", function()
-		self.started = true
-		self:start()
-		self:fire("start")
-	end)
 
+---------------------------------------
+---CALLBACKS---
+--------------------
 
-	self.observing:on("stop", function()
-		self:fire("stop")
-		self:stop()
-		self.started = false
-	end)
+function state:init() end -- runs as soon as the state is set
 
+function state:preStart() end -- runs right before firing the start event (like before entities run their own starts)
 
-	self.observing:on("update", function(dt)
-		if self.started then
-			self:update(dt)
-			self:fire("update", dt)
-		end
-	end)
+function state:start() end -- right after firing the start event
 
-	self.observing:on("draw", function()
-		-- to be honest, game states shouldn't need to draw anything themselves.
-		if self.visible then
-			self:fire("draw")
-		end
-	end)
+function state:stop() end -- upon being called upon to stop
 
-	self.observing:on("change", self.destroy)
-end
+function state:update(dt) end -- do every 
 
-function state:start() end -- override this
-
-function state:stop() end -- and this
-
-function state:update(dt) end -- this too
-
--- well you don't really have to. You could just hook state:on("start/stop/update")
--- muh convenience
-
-function state:destroy() -- don't override please
-	if self.started then
-		self:stop()
-	end
-
-	self:fire("destroy") -- hook instead.
-end
+function state:destroy() end -- clean up everything
 
 return state
