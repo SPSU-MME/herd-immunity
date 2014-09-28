@@ -33,6 +33,7 @@ Host = require("controller.host")
 Collide = require("controller.collide")
 Sprite = require("controller.sprite")
 Move = require("controller.move")
+Profile = require("controller.profile")
 
 Person = require("entity.person")
 House = require("entity.house")

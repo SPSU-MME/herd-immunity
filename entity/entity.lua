@@ -77,17 +77,36 @@ function Entity:setAll(enabled, visible)
 	end
 end
 
-function Entity:freeze(hide, skip)
+function Entity:freeze(hide, ...)
 	local disabled = {}
 	local hidden = {}
+	local skip = {...}
+	for i, v in ipairs(skip) do
+		print(i, v)
+
+	end
+
+	local function Set (list)
+  		local set = {}
+  		for _, l in ipairs(list) do 
+  			set[l] = true 
+  		end
+  		return set
+	end
+
+	local skipSet = Set(skip)
+
+	for k, v in pairs(skipSet) do
+		print(k, v)
+	end
 
 	for i, v in ipairs(self.controllers) do
-		if v.enabled and v.name ~= skip then
+		if v.enabled and not skipSet[v.name] then
 			v:disable()
 			table.insert(disabled, v)
 		end
 
-		if hide and v.visible and v.name ~= skip then
+		if hide and v.visible and not skipSet[v.name] then
 			v:hide()
 			table.insert(hidden, v)
 		end

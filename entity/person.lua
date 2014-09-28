@@ -7,6 +7,7 @@ local Person = Class{
 		self:add(Collide())
 		self:add(Sex("house"))
 		self:add(Move("brownian"))
+		self:add(Profile({}))
 	end
 }
 

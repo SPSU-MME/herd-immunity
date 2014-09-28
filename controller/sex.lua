@@ -25,31 +25,78 @@ end
 
 function Sex:enter(target)
 	local host = target:get("host")
+
+	self.residing = target -- for external calls
+
 	print("entering house")
 
 	self.parent.x = target.x
 	self.parent.y = target.y
+
+	self.occupantIndex = host:addOccupant(self.parent)
+	
 	
 	host.signals:register("filled", function()	
 		print("house filled")
 		Timer.add(3, function()
+			if self:kinseyTest(self.parent, host:getOther(self)) then
+				host:consent(self.occupantIndex) 
+			end
 			print("leaving house")
-			self:leave(target)
 		end)
 	end)
 
-	self.occupantIndex = host:addOccupant(self.parent)
-	self.unfreezeParent = self.parent:freeze(true, self.name)
+	host.signals:register("ready", function()
+		self:doIt(host, host:getOther(self))
+	end)
+
+	self.unfreezeParent = self.parent:freeze(true, self.name, "profile")
+end
+
+function Sex:doIt(host, other)
+	local profile = self.parent:get("profile")
+	if not profile then 
+		print("This sex is off the record...") 
+	else
+		self:applySex("anal", profile)
+		if profile.info.gender == "female" or other:get("profile").info.gender == "female" then
+			self:applySex("vaginal", profile)
+		end
+		self:applySex("oral", profile)
+		profile.info.encounters = profile.info.encounters + 1
+	end
+
+	self:leave(host)
+end
+
+function Sex:applySex(type, profile)
+	if Random:random(1,4) <= profile.info.chance[type] then
+		profile.info.sex[type] = profile.info.sex[type] + Random:random(1, profile.info.chance[type])
+	end
+end
+
+function Sex:kinseyTest(me, other)
+	local kinsey = me:get("profile").info.kinsey
+	local myGender = me:get("profile").info.gender
+	local otherGender = other:get("profile").info.gender
+	local consent = false
+	if myGender == otherGender then
+		consent = Random:random() <= kinsey/6
+	else
+		consent = Random:random() <= -(kinsey/6) + 1
+	end
+	return consent
 end
 
 function Sex:leave(from)
 	
-	table.remove(from:get("host").occupants, self.occupantIndex)
-	self.parent.x = from.x
-	self.parent.y = from.y
+	table.remove(from.occupants, self.occupantIndex)
+
+	self.residing = nil
+	self.parent.x = from.parent.x
+	self.parent.y = from.parent.y
 
 	self.unfreezeParent()
-	self.unfreezeParent = nil -- don't want a stale closure
 
 	self.parent:get("collide"):disable()
 
