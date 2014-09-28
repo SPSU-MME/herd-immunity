@@ -30,7 +30,7 @@ function Sex:enter(target)
 	self.parent.x = target.x
 	self.parent.y = target.y
 	
-	host.signals:register("filled", function(e)	
+	host.signals:register("filled", function()	
 		print("house filled")
 		Timer.add(3, function()
 			print("leaving house")
@@ -39,7 +39,6 @@ function Sex:enter(target)
 	end)
 
 	self.occupantIndex = host:addOccupant(self.parent)
-	
 	self.unfreezeParent = self.parent:freeze(true, self.name)
 end
 
@@ -60,10 +59,5 @@ function Sex:leave(from)
 
 	print("Left.")
 end
-
-function Sex:update()
-
-end
-
 
 return Sex

@@ -38,4 +38,13 @@ function State:draw()
 	end
 end
 
+function State:mousepressed(x, y, button)
+	self:statemousepressed(x, y, button)
+	for i, v in ipairs(self.entities) do
+		v:mousepressed(x, y, button)
+	end
+end
+
+function State:statemousepressed(x, y, button) end
+
 return State

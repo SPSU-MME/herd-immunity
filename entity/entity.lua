@@ -8,6 +8,14 @@ local Entity = Class{
 	end
 }
 
+function Entity:getX()
+	return self.x
+end
+
+function Entity:getY()
+	return self.y
+end
+
 function Entity:add(...)
 	for i, v in ipairs{...} do
 		table.insert(self.controllers, v)
@@ -96,7 +104,6 @@ function Entity:freeze(hide, skip)
 			end
 		end
 	end
-	
 end
 
 function Entity:hideAll()
@@ -130,5 +137,14 @@ function Entity:destroy()
 		self:remove(v.name)
 	end
 end
+
+function Entity:mousepressed(x, y, button)
+	Entity:entitymousepressed(x, y, button)
+	for i, v in ipairs(self.controllers) do
+		v:mousepressed(x, y, button)
+	end
+end
+
+function Entity:entitymousepressed(x, y, button) end
 
 return Entity

@@ -30,4 +30,6 @@ function Controller:draw() end
 
 function Controller:destroy() end
 
+function Controller:mousepressed(x, y, button) end
+
 return Controller

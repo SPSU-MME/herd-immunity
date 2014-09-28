@@ -67,8 +67,8 @@ function Collide:collisionTest()
 	return colliding, with
 end
 
-function Collide:draw()
-	
+function Collide:pointCollisionTest(x, y)
+	return (x < self.parent.x + self.width and x > self.parent.x and y < self.parent.y + self.height and y > self.parent.y)
 end
 
 function Collide:disable()
