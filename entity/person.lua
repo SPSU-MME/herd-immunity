@@ -5,7 +5,7 @@ local Person = Class{
 		local thetype = type or ""
 		self:add(Sprite("assets/img/human"..thetype..".png"))
 		self:add(Collide())
-		self:add(Sex("host"))
+		self:add(Sex("house"))
 		self:add(Move("brownian"))
 	end
 }

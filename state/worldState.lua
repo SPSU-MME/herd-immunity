@@ -1,9 +1,12 @@
 local worldState = State()
 
 function worldState:enter()
-	local rand = love.math.newRandomGenerator()
 	for i=1,2 do
 		self:addEntity(Person(4*i, 4*i))
+	end
+
+	for i=1, 7 do
+		self:addEntity(House(Random:random(0, 800), Random:random(200, 600)))
 	end
 
 	debugHuman = Person(500, 500, 2)

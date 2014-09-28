@@ -38,7 +38,8 @@ function Collide:update()
 	if (self.enabled) then 
 		self.colliding, self.collidingWith = self:collisionTest()
 
-		if self.colliding then 
+
+		if self.colliding and self.collidingWith then 
 			self.signals:emit("colliding", self.collidingWith)
 		end
 	end
@@ -51,16 +52,14 @@ function Collide:collisionTest()
 	local x1, y1 = self.parent.x, self.parent.y
 	local x2, y2 = self.parent.x + self.width, self.parent.y + self.height
 
-
-
 	for i, v in ipairs(self.parent.parent.entities) do
 		other = v:get("collide")
-		if other ~= self then
+		if other and other ~= self then
 			local otherx1, othery1 = other.parent.x, other.parent.y
 			local otherx2, othery2 = other.parent.x + other.width, other.parent.y + other.height
 			if x1 < otherx2 and x2 > otherx1 and y1 < othery2 and y2 > othery1 then
 				colliding = true
-				table.insert(with, other.parent)
+				table.insert(with, v)
 			end
 		end
 	end

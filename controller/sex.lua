@@ -13,7 +13,7 @@ function Sex:added(to)
 		print("parent entity needs to have collide. Failing.")
 		self.parent.remove(self.name);
 	else
-		collide.signals:register("colliding", function(e) 
+		collide.signals:register("colliding", function(e)
 			for i, v in ipairs(e) do
 				if v.name == self.hostname then
 					self:enter(v)
@@ -24,30 +24,41 @@ function Sex:added(to)
 end
 
 function Sex:enter(target)
+	local host = target:get("host")
 	print("entering house")
-	table.insert(target.occupants, self.parent)
-	self.staying = target
 
-	target.signals:register("filled", function(e)	
+	self.parent.x = target.x
+	self.parent.y = target.y
+	
+	host.signals:register("filled", function(e)	
 		print("house filled")
 		Timer.add(3, function()
 			print("leaving house")
-			self:leave()
+			self:leave(target)
 		end)
 	end)
 
+	self.occupantIndex = host:addOccupant(self.parent)
 	
-	for k, v in pairs(self.parent:getAll()) do
-		if k ~= self.name then
-			v:disable()
-			v:hide()
-		end
-	end
+	self.unfreezeParent = self.parent:freeze(true, self.name)
 end
 
-function Sex:leave()
-	table.remove(self.staying, _.detect(self.staying, self))
-	self.staying = nil
+function Sex:leave(from)
+	
+	table.remove(from:get("host").occupants, self.occupantIndex)
+	self.parent.x = from.x
+	self.parent.y = from.y
+
+	self.unfreezeParent()
+	self.unfreezeParent = nil -- don't want a stale closure
+
+	self.parent:get("collide"):disable()
+
+	Timer.add(2, function() 
+		self.parent:get("collide"):enable() 
+	end)
+
+	print("Left.")
 end
 
 function Sex:update()

@@ -14,10 +14,21 @@ function Host:added(to)
 end
 
 function Host:update()
-	if #self.occupants >= 2 and not self.waiting then
-		self.signals:emit("filled")
-	end
+	
+end
 
+function Host:addOccupant(occupant)
+	table.insert(self.occupants, occupant)
+	self:checkFull()
+	return #self.occupants
+end
+
+function Host:checkFull()
+	if #self.occupants >= 1 and not self.waiting then
+		print("filled")
+		self.signals:emit("filled")
+		self.signals:clear("filled")
+	end
 end
 
 return Host

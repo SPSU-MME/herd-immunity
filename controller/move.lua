@@ -8,13 +8,9 @@ local Move = Class{
 	end
 }
 
-function Move:added(to)
-
-end
-
 function Move:update(dt)
 	if not self.moving and Random:random(1, 2) == 2 then
-		self:autoMove(dt, Random:random(500, 700))
+		self:autoMove(dt, Random:random(200, 500))
 	end
 end
 
@@ -25,9 +21,7 @@ function Move:autoMove(dt, speed)
 	end
 	local dx, dy = math.cos(self.angle)*speed, math.sin(self.angle)*speed
 
-	
 	self:smoothMove(dx, dy, 1, "in-out-quad")
-
 end
 
 function Move:move(dx, dy)
@@ -51,9 +45,11 @@ function Move:smoothMove(dx, dy, time, type)
 	if self.parent.x + dx > 0 and self.parent.x + (collide.width or 0) + dx < love.graphics.getWidth() then
 		if self.parent.y + dy > 0 and self.parent.y + (collide.height or 0) + dy < love.graphics.getHeight() then
 			Timer.tween(1, self.parent, {x = self.parent.x+dx, y = self.parent.y+dy}, type, function () self.moving = false end)
+		else
+			self.moving = false
 		end
 	else
-		self.moving = false -- AND THEN, YA GET OUTTA THERE
+		self.moving = false
 	end
 end
 

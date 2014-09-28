@@ -1,5 +1,6 @@
 local Entity = Class{
 	init = function(self, name, x, y, ...)
+		self.name = name
 		self.x = x
 		self.y = y
 		self.controllers = {}
@@ -66,6 +67,36 @@ function Entity:setAll(enabled, visible)
 			end
 		end
 	end
+end
+
+function Entity:freeze(hide, skip)
+	local disabled = {}
+	local hidden = {}
+
+	for i, v in ipairs(self.controllers) do
+		if v.enabled and v.name ~= skip then
+			v:disable()
+			table.insert(disabled, v)
+		end
+
+		if hide and v.visible and v.name ~= skip then
+			v:hide()
+			table.insert(hidden, v)
+		end
+	end
+
+	return function() 
+		for i, v in ipairs(disabled) do
+			v:enable()
+		end
+
+		if hide then
+			for i, v in ipairs(hidden) do
+				v:show()
+			end
+		end
+	end
+	
 end
 
 function Entity:hideAll()
