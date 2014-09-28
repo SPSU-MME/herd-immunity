@@ -1,7 +1,7 @@
 local worldState = State()
 
 function worldState:enter()
-	for i=1,2 do
+	for i=1,8 do
 		self:addEntity(Person(4*i, 4*i))
 	end
 

@@ -81,10 +81,6 @@ function Entity:freeze(hide, ...)
 	local disabled = {}
 	local hidden = {}
 	local skip = {...}
-	for i, v in ipairs(skip) do
-		print(i, v)
-
-	end
 
 	local function Set (list)
   		local set = {}
@@ -95,10 +91,6 @@ function Entity:freeze(hide, ...)
 	end
 
 	local skipSet = Set(skip)
-
-	for k, v in pairs(skipSet) do
-		print(k, v)
-	end
 
 	for i, v in ipairs(self.controllers) do
 		if v.enabled and not skipSet[v.name] then

@@ -5,9 +5,9 @@ local Profile = Class{
 
 	init = function(self, info)
 		Controller.init(self, "profile")
-		self.information = self.info = {
+		self.information = {
 			name = "John Doe",
-			gender = "male", --or "female"
+			gender = (Random:random(1,2)==2 and "male" or "female"),
 			arv = false,
 			encounters = 0,
 			sex = {
@@ -22,6 +22,8 @@ local Profile = Class{
 			},
 			kinsey = Random:random(0, 6)
 		}
+
+		self.info = self.information
 		self:hide()
 
 		Class.include(info, self.information)

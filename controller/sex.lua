@@ -15,7 +15,7 @@ function Sex:added(to)
 	else
 		collide.signals:register("colliding", function(e)
 			for i, v in ipairs(e) do
-				if v.name == self.hostname then
+				if v.name == self.hostname and not v:get("host").filled then
 					self:enter(v)
 				end
 			end
@@ -24,6 +24,7 @@ function Sex:added(to)
 end
 
 function Sex:enter(target)
+	self.sexed = false
 	local host = target:get("host")
 
 	self.residing = target -- for external calls
@@ -38,11 +39,16 @@ function Sex:enter(target)
 	
 	host.signals:register("filled", function()	
 		print("house filled")
-		Timer.add(3, function()
+		Timer.add(1, function()
 			if self:kinseyTest(self.parent, host:getOther(self)) then
-				host:consent(self.occupantIndex) 
+				host:consent(self.occupantIndex)
+
+				Timer.add(2, function() --in case consent can't be met
+					if not self.sexed then self:leave(host) end
+				end)
+			else
+				self:leave(host) --nah fuck this
 			end
-			print("leaving house")
 		end)
 	end)
 
@@ -64,8 +70,9 @@ function Sex:doIt(host, other)
 		end
 		self:applySex("oral", profile)
 		profile.info.encounters = profile.info.encounters + 1
+		print("doesn't matter had sex")
 	end
-
+	self.sexed = true
 	self:leave(host)
 end
 
@@ -80,17 +87,19 @@ function Sex:kinseyTest(me, other)
 	local myGender = me:get("profile").info.gender
 	local otherGender = other:get("profile").info.gender
 	local consent = false
+
 	if myGender == otherGender then
-		consent = Random:random() <= kinsey/6
+		consent = Random:random() <= math.sqrt(kinsey/6)
 	else
-		consent = Random:random() <= -(kinsey/6) + 1
+		consent = Random:random() <= -(kinsey/6)^3 + 1
 	end
+	print((consent and "Yep, I like this" or "Nah not my thing"))
 	return consent
 end
 
 function Sex:leave(from)
 	
-	table.remove(from.occupants, self.occupantIndex)
+	from:removeOccupant(self.occupantIndex)
 
 	self.residing = nil
 	self.parent.x = from.parent.x
